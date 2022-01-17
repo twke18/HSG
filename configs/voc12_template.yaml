@@ -1,0 +1,71 @@
+---
+gpus: "GPUS"
+num_threads: 4
+dataset:
+  num_classes: 21
+  semantic_ignore_index: 255
+  dataset: VOC2012
+  data_dir: "DATA_ROOT"
+  train_data_list: "TRAIN_DATA_LIST"
+  test_data_list: "TEST_DATA_LIST"
+  color_map_path: "misc/colormapvoc.mat"
+
+network:
+  pretrained: "PRETRAINED"
+  embedding_dim: EMBEDDING_DIM
+  label_divisor: LABEL_DIVISOR
+  use_syncbn: USE_SYNCBN
+  kmeans_iterations: KMEANS_ITERATIONS
+  kmeans_num_clusters:
+    - KMEANS_NUM_CLUSTERS
+    - KMEANS_NUM_CLUSTERS
+  backbone_types: BACKBONE_TYPES
+  prediction_types: PREDICTION_TYPES
+
+train:
+  resume: false
+  lr_policy: LR_POLICY
+  begin_iteration: 0
+  snapshot_step: SNAPSHOT_STEP
+  tensorboard_step: 1000
+  max_iteration: MAX_ITERATION
+  random_mirror: true
+  random_scale: true
+  random_crop: true
+  warmup_iteration: WARMUP_ITERATION
+  base_lr: LR
+  weight_decay: WD
+  momentum: 0.9
+  batch_size: BATCH_SIZE
+  crop_size:
+    - TRAIN_CROP_SIZE
+    - TRAIN_CROP_SIZE
+  memory_bank_size: MEMORY_BANK_SIZE
+  img_sim_concentration: IMG_SIM_CONCENTRATION
+  fine_hrchy_concentration: FINE_HRCHY_CONCENTRATION
+  coarse_hrchy_concentration: COARSE_HRCHY_CONCENTRATION
+  centroid_cont_concentration: CENTROID_CONT_CONCENTRATION
+  img_sim_loss_types: IMG_SIM_LOSS_TYPES
+  fine_hrchy_loss_types: FINE_HRCHY_LOSS_TYPES
+  coarse_hrchy_loss_types: COARSE_HRCHY_LOSS_TYPES
+  centroid_cont_loss_types: CENTROID_CONT_LOSS_TYPES
+  dmon_loss_types: DMON_LOSS_TYPES
+  img_sim_loss_weight: IMG_SIM_LOSS_WEIGHT
+  fine_hrchy_loss_weight: FINE_HRCHY_LOSS_WEIGHT
+  coarse_hrchy_loss_weight: COARSE_HRCHY_LOSS_WEIGHT
+  centroid_cont_loss_weight: CENTROID_CONT_LOSS_WEIGHT
+  dmon_loss_weight: DMON_LOSS_WEIGHT
+  fine_hrchy_clusters: FINE_HRCHY_CLUSTERS
+  coarse_hrchy_clusters: COARSE_HRCHY_CLUSTERS
+  dmon_knn: DMON_KNN
+
+test:
+  scales:
+    - 1
+  image_size: TEST_IMAGE_SIZE
+  crop_size:
+    - TEST_CROP_SIZE_H
+    - TEST_CROP_SIZE_W
+  stride:
+    - TEST_STRIDE
+    - TEST_STRIDE
