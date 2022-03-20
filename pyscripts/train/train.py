@@ -27,7 +27,9 @@ import hsg.models.utils as model_utils
 from hsg.data.datasets.unsup_dataset import SelfsupListDataset
 import hsg.models.embeddings.resnet_fcn as resnet_fcn
 import hsg.models.embeddings.resnet_fcn_hsg as resnet_fcn_hsg
+import hsg.models.embeddings.resnet_fcn_hsg_cs as resnet_fcn_hsg_cs
 from hsg.models.predictions.hsg import hsg
+from hsg.models.predictions.hsg_cs import hsg_cs
 
 torch.cuda.manual_seed_all(235)
 torch.manual_seed(235)
@@ -82,11 +84,15 @@ def main():
     embedding_model = resnet_fcn.resnet_50_fcn(config).cuda()
   elif config.network.backbone_types == 'fcn_50_hsg':
     embedding_model = resnet_fcn_hsg.resnet_50_fcn_multiview(config).cuda()
+  elif config.network.backbone_types == 'fcn_50_hsg_cs':
+    embedding_model = resnet_fcn_hsg_cs.resnet_50_fcn_multiview(config).cuda()
   else:
     raise ValueError('Not support ' + config.network.backbone_types)
 
   if config.network.prediction_types == 'hsg':
     prediction_model = hsg(config).cuda()
+  elif config.network.prediction_types == 'hsg_cs':
+    prediction_model = hsg_cs(config).cuda()
   else:
     raise ValueError('Not support ' + config.network.prediction_types)
 

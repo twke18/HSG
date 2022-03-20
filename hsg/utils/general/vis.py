@@ -42,6 +42,7 @@ def convert_label_to_color(label, color_map):
   """Convert integer label to RGB image.
   """
   n, h, w = label.shape
+  label = label % 256
   rgb = torch.index_select(color_map, 0, label.view(-1)).view(n, h, w, 3)
   rgb = rgb.permute(0, 3, 1, 2)
 

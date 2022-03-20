@@ -66,7 +66,7 @@ def main():
   else:
     raise ValueError('Not support ' + config.network.backbone_types)
 
-  if config.network.prediction_types in ['hsg', 'segsort']:
+  if config.network.prediction_types in ['hsg', 'hsg_cs', 'segsort']:
     prediction_model = segsort(config)
   else:
     raise ValueError('Not support ' + config.network.prediction_types)

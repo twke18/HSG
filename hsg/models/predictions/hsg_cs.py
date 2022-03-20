@@ -266,7 +266,7 @@ class Hsg(nn.Module):
     return ret
 
 
-def hsg(config):
+def hsg_cs(config):
   """Non-paramteric prototype predictor.
   """
   return Hsg(config)
