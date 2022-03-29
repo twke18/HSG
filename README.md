@@ -10,6 +10,9 @@ We approach unsupervised segmentation as a pixel-wise feature learning problem. 
 We deliver the first data-driven unsupervised hierarchical semantic segmentation method called Hierarchical Segment Grouping (HSG). Capturing visual similarity and statistical co-occurrences, HSG also outperforms existing unsupervised segmentation methods by a large margin on five major object- and scene-centric benchmarks. 
 
 
+
+<img align="center" img src="misc/framework.png" width="720">
+
 ## Code Base
 This release of code is based on [SPML](https://github.com/twke18/SPML) in ICLR 2021.
 
