@@ -128,4 +128,4 @@ If you find this code useful for your research, please consider citing our paper
 
 ## License
 
-SPML is released under the MIT License (refer to the LICENSE file for details).
+HSG is released under the MIT License (refer to the LICENSE file for details).
