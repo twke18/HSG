@@ -90,7 +90,8 @@ This release of code is based on [SPML](https://github.com/twke18/SPML) in ICLR 
 
 ```
 
-
+## Generate Oversegmentations with OWT-UCM Procedure.
+See [tools/README.md](https://github.com/twke18/HSG/blob/master/tools/README.md) for details.
 
 ## MSCOCO Trained Models.
 We provide the download links for our HSG models trained on MSCOCO and tested on PASCAL VOC.  All models are trained in two stage.  Larger batchsize (128/192) but smaller image size (224x224) is used in the first stage.  Smaller batchsize (48) but larger image size (448x448) is adopted in the second strage.  We summarize the performance as follows.
