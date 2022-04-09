@@ -118,7 +118,7 @@ source bashscripts/cityscapes/train.sh
 
 ## Citation
 
-If you find this code useful for your research, please consider citing our paper Universal Weakly Supervised Segmentation by Pixel-to-Segment Contrastive Learning.
+If you find this code useful for your research, please consider citing our paper Unsupervised Hierarchical Semantic Segmentation with Multiview Cosegmentation and Clustering Transformers.
 ```
 @inproceedings{,
   title={Unsupervised Hierarchical Semantic Segmentation with Multiview Cosegmentation and Clustering Transformers},
