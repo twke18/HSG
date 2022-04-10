@@ -29,6 +29,7 @@ class TransformerClustering(nn.Module):
       nhead: A scalar indicates the number of heads for Attention.
       num_encoder_layers: A scalar indicates the number of Encoder.
       num_decoder_layers: A scalar indicates the number of Decoder.
+      d_model: A scalar indicates the intermediate channels to Transformer.
       dropout: A `float` indicates the dropout rate.
       activation: A string indicates the type of non-linear activation.
       normalize_before: A `bool` indicates if applying normalization first.

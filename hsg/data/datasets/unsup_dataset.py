@@ -43,6 +43,7 @@ class UnsupListDataset(ListDataset):
     image = self._read_image(image_path)
 
     h, w = image.shape[:2]
+    # Do not use ground-truth semantic annotations.
     semantic_label = np.zeros((h, w), dtype=np.int32)
 
     if len(self.instance_label_paths) > 0:
@@ -90,6 +91,7 @@ class SelfsupListDataset(ListDataset):
     image = self._read_image(image_path)
 
     h, w = image.shape[:2]
+    # Do not use ground-truth semantic annotations.
     semantic_label = np.zeros((h, w), dtype=np.int32)
 
     if len(self.instance_label_paths) > 0:

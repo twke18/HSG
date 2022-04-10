@@ -40,6 +40,13 @@ def get_params(model, prefixs, suffixes, exclude=None):
 
 def gather_and_reorder_image_indices(image_indices, anchor_device=None):
   """Gather and reorder image indices by occurring order.
+
+  Args:
+    image_indices: A list of 1-D long tensors indicates image ids.
+
+  Returns:
+    image_indices: A re-arranged list of 1-D long tensors indicates
+      re-arranged image ids based on occurring order.
   """
   devices = [ind.device for ind in image_indices]
   if anchor_device is None:
@@ -72,6 +79,25 @@ def gather_and_update_cluster_mappings(cluster_indices_1,
                                        cluster_indices_2,
                                        anchor_device=None):
   """Gather and create index mappings.
+
+  Args:
+    cluster_indices_1: A list of 1-D long tensors indicates
+      labeling/ordering index.
+    cluster_indices_2: A list of 1-D long tensors indicates
+      labeling/ordering index.
+
+  Returns:
+    cluster_mapping: A list of duplicated 1-D long tensors,
+      where the tensor indicates the mapping of index from
+      `cluster_indices_1` to `cluster_indices_2`.
+
+      For example:
+        `cluster_indices_1` = [0, 1, 2, 1, 3]
+        `cluster_indices_2` = [2, 5, 1, 5, 5]
+        `cluster_mapping` = [2, 5, 1, 5]
+
+      The mapping is useful to know associate different
+      levels of hierarchy.
   """
   devices = [c_ind.device for c_ind in cluster_indices_1]
   if anchor_device is None:

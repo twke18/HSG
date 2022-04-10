@@ -172,6 +172,8 @@ def random_crop_with_pad(image,
     image_pad_value: An integer indicates the padding value.
     label_pad_value: An integer indicates the padding value.
     pad_mode: Padding mode. left_top/center.
+    return_bbox: If True, additionally return [x0, y0, x1, y1]
+      cooridantes of cropped boxes.
 
   Return:
     Two tensors of shape `[new_height, new_width, channels]`.

@@ -227,7 +227,7 @@ def main():
           label_batch[i][name + '_prototype_with_loc'] = prototypes_with_loc[i]
           embeddings[i][name + '_cluster_index'] = cluster_indices[i]
 
-    # Gather mapping labels among neighboring levels.
+    # Gather mapping labels among K-Means clusterign and higher levels.
     for name_1, name_2 in zip(['', ''], ['finehrchy_', 'coarsehrchy_']):
       if (name_1+'cluster_index' in embeddings[0].keys()
           and name_2+'cluster_index' in embeddings[0].keys()):

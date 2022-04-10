@@ -18,8 +18,6 @@ def parse_args(description=''):
                       help='/path/to/specific/config/file.')
   parser.add_argument('--semantic_memory_dir', type=str, default=None,
                       help='/path/to/stored/memory/dir.')
-  parser.add_argument('--cam_dir', type=str, default=None,
-                      help='/path/to/stored/cam/dir.')
   parser.add_argument('--data_dir', type=str, default=None,
                       help='/root/dir/to/data.')
   parser.add_argument('--data_list', type=str, default=None,

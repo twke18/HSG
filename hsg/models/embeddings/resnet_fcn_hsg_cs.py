@@ -161,8 +161,13 @@ class ResnetFcn(ResnetBase):
         - `cluster_instance_label` of shape `[total_num_pixels]`.
         - `cluster_index` of shape `[total_num_pixels]`.
         - `cluster_batch_index` of shape `[total_num_pixels]`.
+        - `finehrchy_cluster_index` of shape `[total_num_pixels]`.
+        - `coarsehrchy_cluster_index` of shape `[total_num_pixels]`.
         - `nd_prototype` of shape `[batch_size, channels, max_num_clusters]`.
         - `nd_prototype_padding_mask` of shape `[batch_size, max_num_clusters]`.
+        - `nd_prototype_batch_index` of shape `[batch_size, max_num_clusters]`.
+        - `nd_prototype_semantic_label` of shape `[batch_size, max_num_clusters]`.
+        - `nd_prototype_instance_label` of shape `[batch_size, max_num_clusters]`.
         - `cluster_index_by_image` of shape `[total_num_pixels]`.
         - `finehrchy_nd_prototype_grouping_label` of shape
             `[batch_size, max_num_clusters]`.
@@ -220,8 +225,7 @@ class ResnetFcn(ResnetBase):
     else:
       cluster_pos_embeddings = None
 
-    # Step2. Extract KMeans clustering prototypes. Note: the
-    # prototype could be lifted to hyper-bolic space from here.
+    # Step2. Extract KMeans clustering prototypes.
     (prototypes,
      pos_prototypes,
      prototype_padding_masks,
@@ -456,8 +460,6 @@ class ResnetFcn(ResnetBase):
                                    cluster_labels):
     """Extract prototypes from K-Means clustering.
 
-    TODO(twke): Could be used to extract hyperbolic prototypes.
-
     Args:
       cluster_embeddings: A `tensor` of shape
         `[total_num_pixels, channels]`.
@@ -470,13 +472,23 @@ class ResnetFcn(ResnetBase):
 
     Returns:
       prototypes: A `tensor` of shape
-        `[batch_size, channels, max_num_clusters]`, where dim-1 is
+        `[batch_size, channels, max_num_clusters]`, where entries are
+        padded with 0 values if number of KMeans clusters is less
+        than `max_num_clusters`.
+      pos_prototypes: A `tensor` of shape
+        `[batch_size, channels, max_num_clusters]`, where entries are
         padded with 0 values if number of KMeans clusters is less
         than `max_num_clusters`.
       prototype_padding_masks: A `tensor` of shape
-        `[batch_size, max_num_clusters]`, where dim-1 is padded with
+        `[batch_size, max_num_clusters]`, where entries are padded with
         `True` value if number of KMeans clusters is less than
         `max_num_clusters`.
+      prototype_labels: A `tensor` of shape
+        `[batch_size, max_num_clusters]`, where entries are padded with
+        -1 values if number of KMeans clusters is less than `max_num_clusters`.
+      prototype_batch_indices: A `tensor` of shape
+        `[batch_size, max_num_clusters]`, where entries are padded with
+        -1 values if number of KMeans clusters is less than `max_num_clusters`.
       cluster_indices_by_image: A `tensor` of shape
         `[total_num_pixels]`, where index values are ordered w.r.t
         each image.
@@ -576,15 +588,15 @@ class ResnetFcn(ResnetBase):
 
     Args:
       prototypes: A `tensor` of shape
-        `[batch_size, channels, max_num_clusters]`, where dim-1 is
+        `[batch_size, channels, max_num_clusters]`, where entries are
         padded with 0 values if number of KMeans clusters is less
         than `max_num_clusters`.
       pos_prototypes: A `tensor` of shape
-        `[batch_size, channels, max_num_clusters]`, where dim-1 is
+        `[batch_size, channels, max_num_clusters]`, where entries are
         padded with 0 values if number of KMeans clusters is less
         than `max_num_clusters`.
       prototype_padding_masks: A `tensor` of shape
-        `[batch_size, max_num_clusters]`, where dim-1 is padded with
+        `[batch_size, max_num_clusters]`, where entries are padded with
         `True` value if number of KMeans clusters is less than
         `max_num_clusters`.
 
@@ -603,14 +615,14 @@ class ResnetFcn(ResnetBase):
         `[batch_size, channels, max_num_clusters]`, indicates
         output from transformer encoder.
       coarsehrchy_prototype_grouping_labels: A `tensor` of shape
-        `[batch_size, fine_hrchy_clusters]`, indicates the
-        coarse-level grouping of fine-level groupings.
+        `[batch_size, max_num_clusters]`, indicates the
+        coarse-level grouping of K-Means clusters.
       coarsehrchy_prototype_grouping_centroids: A `tensor` of shape
         `[batch_size, channels, coarse_hrchy_clusters]`, indicates
         the centroids of coarse-level grouping.
       coarsehrchy_prototype_grouping_logits: A `tensor` of shape
-        `[batch_size, fine_hrchy_clusters, coarse_hrchy_clusters]`,
-        indicates assignment logits of fine-level groupings to
+        `[batch_size, max_num_clusters, coarse_hrchy_clusters]`,
+        indicates assignment logits of K-Means clusters to
         coarse-level grouping centroids.
       coarsehrchy_prototype_encoder_memory: A `tensor` of shape
         `[batch_size, channels, fine_hrchy_clusters]`, indicates
@@ -810,25 +822,35 @@ class MultiviewResnetFcn(ResnetFcn):
         - `cluster_instance_label` of shape `[total_num_pixels]`.
         - `cluster_index` of shape `[total_num_pixels]`.
         - `cluster_batch_index` of shape `[total_num_pixels]`.
-        - `nd_prototype` of shape `[batch_size, channels, max_num_clusters]`.
-        - `nd_prototype_padding_mask` of shape `[batch_size, max_num_clusters]`.
+        - `finehrchy_cluster_index` of shape `[total_num_pixels]`.
+        - `coarsehrchy_cluster_index` of shape `[total_num_pixels]`.
+        - `nd_prototype` of shape
+            `[batch_size // num_aug, channels, max_num_clusters]`.
+        - `nd_prototype_padding_mask` of shape
+            `[batch_size // num_aug, max_num_clusters]`.
+        - `nd_prototype_batch_index` of shape
+            `[batch_size // num_aug, max_num_clusters]`.
+        - `nd_prototype_semantic_label` of shape
+            `[batch_size // num_aug, max_num_clusters]`.
+        - `nd_prototype_instance_label` of shape
+            `[batch_size // num_aug, max_num_clusters]`.
         - `cluster_index_by_image` of shape `[total_num_pixels]`.
         - `finehrchy_nd_prototype_grouping_label` of shape
-            `[batch_size, max_num_clusters]`.
+            `[batch_size // num_aug, max_num_clusters]`.
         - `finehrchy_nd_prototype_grouping_centroid` of shape
-            `[batch_size, channels, fine_hrchy_clusters]`.
+            `[batch_size // num_aug, channels, fine_hrchy_clusters]`.
         - `finehrchy_nd_prototype_grouping_logit` of shape
-            `[batch_size, max_num_clusters, fine_hrchy_clusters]`.
+            `[batch_size // num_aug, max_num_clusters, fine_hrchy_clusters]`.
         - `finehrchy_nd_prototype_encoder_memory` of shape
-            `[batch_size, channels, max_num_clusters]`.
+            `[batch_size // num_aug, channels, max_num_clusters]`.
         - `coarsehrchy_nd_prototype_grouping_label` of shape
-            `[batch_size, fine_hrchy_clusters]`.
+            `[batch_size // num_aug, max_num_clusters]`.
         - `coarsehrchy_nd_prototype_grouping_centroid` of shape
-            `[batch_size, channles, coarse_hrchy_clusters]`.
+            `[batch_size // num_aug, channles, coarse_hrchy_clusters]`.
         - `coarsehrchy_nd_prototype_grouping_logit` of shape
-            `[batch_size, fine_hrchy_clusters, coarse_hrchy_clusters]`.
+            `[batch_size // num_aug, max_num_clusters, coarse_hrchy_clusters]`.
         - `coarsehrchy_nd_prototype_encoder_memory` of shape
-            `[batch_size, channels, fine_hrchy_clusters]`.
+            `[batch_size // num_aug, channels, fine_hrchy_clusters]`.
     """
     if semantic_labels is not None and instance_labels is not None:
       labels = semantic_labels * self.label_divisor + instance_labels
@@ -869,8 +891,7 @@ class MultiviewResnetFcn(ResnetFcn):
     else:
       cluster_pos_embeddings = None
 
-    # Step2. Extract KMeans clustering prototypes. Note: the
-    # prototype could be lifted to hyper-bolic space from here.
+    # Step2. Extract KMeans clustering prototypes.
     (prototypes,
      pos_prototypes,
      prototype_padding_masks,
@@ -996,8 +1017,6 @@ class MultiviewResnetFcn(ResnetFcn):
     when we consider images and their augmented counterparts. We will
     stack prototypes w.r.t the data with the same image ids.
 
-    TODO(twke): Could be used to extract hyperbolic prototypes.
-
     Args:
       cluster_embeddings: A `tensor` of shape
         `[total_num_pixels, channels]`.
@@ -1012,16 +1031,16 @@ class MultiviewResnetFcn(ResnetFcn):
     Returns:
       prototypes: A `tensor` of shape
         `[batch_size // num_aug, channels, max_num_clusters]`,
-        where dim-1 is padded with 0 values if number of KMeans clusters
-        is less than `max_num_clusters`.
+        where entries are padded with 0 values if number of KMeans
+        clusters is less than `max_num_clusters`.
       pos_prototypes: A `tensor` of shape
         `[batch_size // num_aug, channels, max_num_clusters]`,
-        where dim-1 is padded with 0 values if number of KMeans clusters
-        is less than `max_num_clusters`.
+        where entries are padded with 0 values if number of KMeans
+        clusters is less than `max_num_clusters`.
       prototype_padding_masks: A `tensor` of shape
         `[batch_size // num_aug, max_num_clusters]`, where
-        dim-1 is padded with `True` value if number of KMeans clusters
-        is less than `max_num_clusters`.
+        entries are padded with `True` value if number of KMeans
+        clusters is less than `max_num_clusters`.
       prototype_labels: A `tensor` of shape
         `[batch_size // num_aug, max_num_clusters]`.
       prototype_batch_indices: A `tensor` of shape

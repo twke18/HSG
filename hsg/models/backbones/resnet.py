@@ -106,6 +106,7 @@ class ResnetBackbone(nn.Module):
 
     self.res4 = self._make_layer(
         Bottleneck, 256, blocks[2], stride=strides[2], dilation=dilations[2])
+    # Adopt Multi_Grid as DeepLab-v3.
     self.res5 = self._make_layer(
         Bottleneck, 512, blocks[3], stride=strides[3], dilation=dilations[3],
         grids=[1,2,4])

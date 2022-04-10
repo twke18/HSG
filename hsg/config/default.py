@@ -18,9 +18,6 @@ config.network.pixel_stds = np.array((0.229, 0.224, 0.225))
 config.network.pretrained = ''
 config.network.use_syncbn = False
 config.network.backbone_types = ''
-# Spatial Pooling Pyramid module.
-config.network.aspp_feature_dim = 512
-config.network.pspp_feature_dim = 512
 config.network.embedding_dim = 128
 config.network.label_divisor = 255
 # Spherical KMeans.
