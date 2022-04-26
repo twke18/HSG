@@ -119,12 +119,12 @@ source bashscripts/cityscapes/train.sh
 
 If you find this code useful for your research, please consider citing our paper Unsupervised Hierarchical Semantic Segmentation with Multiview Cosegmentation and Clustering Transformers.
 ```
-@inproceedings{,
-  title={Unsupervised Hierarchical Semantic Segmentation with Multiview Cosegmentation and Clustering Transformers},
-  author={Ke, Tsung-Wei and Hwang, Jyh-Jing and Guo, Yunhui and Wang, Xudong and Yu, Stella X.},
-  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-  pages={},
-  year={2022}
+@inproceedings{ke2022hsg,
+title={Unsupervised Hierarchical Semantic Segmentation with Multiview Cosegmentation and Clustering Transformers},
+author={Ke, Tsung-Wei and Hwang, Jyh-Jing and Guo, Yunhui and Wang, Xudong and Yu, Stella X.},
+booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+pages={},
+year={2022}
 }
 ```
 
